@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulasi TKA RPL 2026 - 50 Soal HOTS CBT</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .font-mono-code { font-family: 'JetBrains Mono', monospace; }
+        .custom-scrollbar::-webkit-scrollbar { width: 5px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-900 h-full flex flex-col justify-between selection:bg-indigo-600 selection:text-white">
+
+    <!-- HEADER UTAMA -->
+    <header class="bg-slate-900 text-white shadow-lg border-b-2 border-indigo-500 flex-shrink-0 z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="bg-gradient-to-br from-indigo-500 to-indigo-600 text-white font-black px-3 py-1.5 rounded-lg text-sm tracking-wider shadow-sm">
+                    RPL 2026
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-xs sm:text-base tracking-tight leading-tight">SIMULASI ASESMEN KOMPETENSI KEAKLIAN RPL (FASE F)</h1>
+                    <p class="text-[11px] text-slate-400 font-medium">Rekayasa Perangkat Lunak &bull; 50 Soal HOTS Komprehensif</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-3">
+                <div id="header-user-info" class="hidden text-right text-xs bg-slate-800 px-3.5 py-1.5 rounded-xl border border-slate-700 shadow-sm">
+                    <p class="font-bold text-indigo-400" id="nav-nama">-</p>
+                    <p class="text-slate-300 text-[10px]">Peserta • <span id="nav-username" class="font-mono-code text-indigo-300">-</span></p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- KONTEN UTAMA -->
+    <main class="flex-grow flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+
+        <!-- ================= PAGE 1: LOGIN SIMULASI ================= -->
+        <div id="page-login" class="w-full max-w-md bg-white rounded-2xl shadow-xl border border-slate-200/80 overflow-hidden transition-all duration-300 my-auto">
+            <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 px-6 py-6 text-white text-center relative border-b border-slate-800">
+                <span class="absolute top-3 right-3 bg-indigo-500 text-white text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase shadow-xs">CBT RPL v2026</span>
+                <h2 class="text-lg font-extrabold tracking-tight">Login Peserta Ujian TKA RPL</h2>
+                <p class="text-xs text-indigo-200/80 mt-1">4 Elemen Utama ATP Fase F (50 Soal HOTS)</p>
+            </div>
+            
+            <form id="form-login" class="p-6 space-y-4">
+                <!-- Info Token Banner -->
+                <div class="bg-indigo-50 border border-indigo-200 p-3.5 rounded-xl text-xs text-indigo-900 flex justify-between items-center shadow-xs">
+                    <div>
+                        <p class="font-bold text-indigo-900 uppercase tracking-wider text-[10px]">Token Ujian Aktif:</p>
+                        <p class="font-mono-code text-base font-extrabold tracking-widest text-indigo-950 mt-0.5" id="token-display">RPL50</p>
+                    </div>
+                    <button type="button" onclick="generateNewToken()" class="text-[10px] bg-indigo-200/80 hover:bg-indigo-300 text-indigo-950 font-bold px-3 py-1.5 rounded-lg transition shadow-2xs">Ganti Token</button>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Username / NISN</label>
+                    <input type="text" id="username" required autocomplete="username" class="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-600 focus:bg-white focus:outline-none transition font-mono-code font-semibold">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Password</label>
+                    <input type="password" id="password" required autocomplete="current-password" class="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-600 focus:bg-white focus:outline-none transition">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Nama Lengkap Peserta</label>
+                    <input type="text" id="nama" required autocomplete="name" class="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-600 focus:bg-white focus:outline-none transition uppercase font-semibold">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Tanggal Lahir</label>
+                        <input type="text" id="tgl-lahir" required autocomplete="bday" placeholder="DD/MM/YYYY" class="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-600 focus:bg-white focus:outline-none transition text-center font-mono-code">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Input Token</label>
+                        <input type="text" id="token-input" required placeholder="Token" class="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-600 focus:bg-white focus:outline-none transition uppercase font-mono-code text-center tracking-widest font-bold text-indigo-900">
+                    </div>
+                </div>
+
+                <div id="error-msg" class="hidden text-xs text-red-600 bg-red-50 p-3 rounded-xl border border-red-200 text-center font-semibold" role="alert" aria-live="polite"></div>
+                <p class="text-[10px] leading-relaxed text-slate-500">Mode demo: token diperiksa di browser. Autentikasi akun dan validasi password/tanggal lahir memerlukan backend.</p>
+
+                <button type="submit" class="w-full mt-2 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-bold py-3 px-4 rounded-xl shadow-md hover:shadow-lg transition duration-200 text-xs sm:text-sm tracking-wide uppercase">
+                    MULAI UJIAN SIMULASI (50 SOAL HOTS)
+                </button>
+            </form>
+            <div class="bg-slate-50 px-6 py-3 border-t border-slate-200 text-center text-[11px] text-slate-500 font-medium">
+                Sistem CBT TKA RPL Fase F &bull; Developer: REDHO ARI MERATNO
+            </div>
+        </div>
+
+        <!-- ================= PAGE 2: UJIAN / 50 SOAL CBT ================= -->
+        <div id="page-ujian" class="hidden w-full max-w-7xl bg-white rounded-2xl shadow-xl border border-slate-200/90 overflow-hidden flex flex-col lg:flex-row transition-all duration-300 h-[88vh] my-auto">
+            
+            <!-- Bagian Kiri: Pertanyaan dan Pilihan Ganda -->
+            <div class="flex-grow p-5 sm:p-8 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-slate-200 overflow-y-auto">
+                <div>
+                    <!-- Header Soal & Timer -->
+                    <div class="flex flex-wrap justify-between items-center pb-4 mb-5 border-b border-slate-100 gap-2">
+                        <div class="flex items-center space-x-2">
+                            <span class="bg-indigo-600 text-white font-extrabold text-xs px-3.5 py-1.5 rounded-lg shadow-2xs" id="badge-nomor">Soal No. 1</span>
+                            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider" id="elemen-badge">Elemen RPL</span>
+                        </div>
+                        <div id="timer-box" class="flex items-center space-x-2 bg-slate-900 text-amber-400 px-4 py-1.5 rounded-xl border border-slate-800 text-xs font-mono-code font-bold shadow-xs">
+                            <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            <span id="timer-text">01:30:00</span>
+                        </div>
+                    </div>
+
+                    <!-- Teks Soal -->
+                    <div class="mb-6">
+                        <p class="text-slate-800 text-sm sm:text-base font-semibold leading-relaxed whitespace-pre-line" id="soal-teks">
+                            Memuat pertanyaan simulasi...
+                        </p>
+                    </div>
+
+                    <!-- Pilihan Ganda -->
+                    <div class="space-y-3" id="options-container">
+                        <!-- Dynamic Options -->
+                    </div>
+                </div>
+
+                <!-- Tombol Navigasi Soal -->
+                <div class="flex flex-wrap justify-between items-center pt-6 mt-6 border-t border-slate-100 gap-3">
+                    <button type="button" id="btn-prev" onclick="prevSoal()" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition disabled:opacity-40 disabled:cursor-not-allowed border border-slate-200">
+                        &larr; Sebelumnya
+                    </button>
+                    
+                    <div class="flex items-center space-x-2">
+                        <label class="inline-flex items-center cursor-pointer text-xs font-bold text-amber-900 bg-amber-50 px-4 py-2 rounded-xl border border-amber-200 shadow-2xs select-none">
+                            <input type="checkbox" id="ragu-ragu" onchange="toggleRagu()" class="rounded border-amber-300 text-amber-500 focus:ring-amber-400 w-4 h-4 mr-2">
+                            Ragu-ragu
+                        </label>
+                    </div>
+
+                    <button type="button" id="btn-next" onclick="nextSoal()" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition shadow-md">
+                        Selanjutnya &rarr;
+                    </button>
+                </div>
+            </div>
+
+            <!-- Bagian Kanan: Navigasi Nomor Soal -->
+            <div class="w-full lg:w-80 p-5 bg-slate-50/70 flex flex-col justify-between flex-shrink-0">
+                <div class="flex flex-col h-full">
+                    <div class="flex items-center justify-between mb-3 flex-shrink-0">
+                        <h3 class="font-bold text-slate-800 text-xs uppercase tracking-wider">Navigasi Nomor Soal</h3>
+                        <span class="text-xs font-mono-code font-bold text-indigo-700 bg-indigo-50 px-2.5 py-0.5 rounded-md border border-indigo-100" id="progress-info">1 / 50</span>
+                    </div>
+
+                    <!-- Grid Nomor Soal -->
+                    <div class="grid grid-cols-5 gap-1.5 overflow-y-auto max-h-[300px] p-2 custom-scrollbar border border-slate-200 bg-white rounded-2xl shadow-inner mb-3" id="grid-nomor">
+                        <!-- Rendered via JS -->
+                    </div>
+
+                    <!-- Keterangan Warna Nomor -->
+                    <div class="grid grid-cols-3 gap-1 text-[10px] text-slate-600 bg-white p-2.5 rounded-xl border border-slate-200 shadow-2xs flex-shrink-0 font-medium">
+                        <div class="flex items-center space-x-1.5">
+                            <div class="w-3 h-3 bg-indigo-600 rounded-sm"></div>
+                            <span>Dijawab</span>
+                        </div>
+                        <div class="flex items-center space-x-1.5">
+                            <div class="w-3 h-3 bg-amber-400 rounded-sm"></div>
+                            <span>Ragu</span>
+                        </div>
+                        <div class="flex items-center space-x-1.5">
+                            <div class="w-3 h-3 bg-white border border-slate-300 rounded-sm"></div>
+                            <span>Kosong</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-4 mt-3 border-t border-slate-200 flex-shrink-0">
+                    <button type="button" onclick="konfirmasiSelesai()" class="w-full bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-extrabold py-3 px-4 rounded-xl shadow-md transition duration-200 text-xs tracking-wider uppercase">
+                        SELESAI & KUMPULKAN UJIAN
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ================= PAGE 3: HASIL / SKOR UJIAN ================= -->
+        <div id="page-hasil" class="hidden w-full max-w-2xl bg-white rounded-2xl shadow-xl border border-slate-200/90 overflow-hidden transition-all duration-300 p-6 sm:p-8 text-center my-auto max-h-[90vh] flex flex-col justify-between">
+            <div class="overflow-y-auto pr-1 custom-scrollbar">
+                <div class="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl font-black shadow-inner">
+                    ✓
+                </div>
+                <h2 class="text-xl font-extrabold text-slate-800">Asesmen Kompetensi RPL Selesai</h2>
+                <p class="text-xs text-slate-500 mt-0.5">Hasil evaluasi kemampuan HOTS 4 Elemen ATP RPL Fase F Anda telah dikalkulasi.</p>
+
+                <!-- Skor Highlight -->
+                <div class="my-5 bg-gradient-to-br from-slate-900 to-indigo-950 text-white rounded-2xl p-5 shadow-md relative overflow-hidden border border-slate-800">
+                    <div class="text-[11px] uppercase tracking-widest text-slate-400 font-bold mb-1">NILAI AKHIR ASESMEN</div>
+                    <div class="text-5xl font-black tracking-tight text-amber-400 font-mono-code my-1" id="hasil-skor">0</div>
+                    <div class="text-xs text-slate-300 font-medium" id="status-kelulusan">-</div>
+                </div>
+
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 text-left space-y-2.5 text-xs shadow-2xs">
+                    <div class="flex justify-between border-b border-slate-200/80 pb-2">
+                        <span class="text-slate-500 font-medium">Nama Peserta</span>
+                        <span class="font-bold text-slate-800 uppercase" id="hasil-nama">-</span>
+                    </div>
+                    <div class="flex justify-between border-b border-slate-200/80 pb-2">
+                        <span class="text-slate-500 font-medium">Username / NISN</span>
+                        <span class="font-mono-code font-bold text-slate-800" id="hasil-username">-</span>
+                    </div>
+                    <div class="flex justify-between border-b border-slate-200/80 pb-2">
+                        <span class="text-slate-500 font-medium">Jawaban Benar</span>
+                        <span class="font-bold text-emerald-600" id="hasil-benar">-</span>
+                    </div>
+                    <div class="flex justify-between border-b border-slate-200/80 pb-2">
+                        <span class="text-slate-500 font-medium">Jawaban Salah / Kosong</span>
+                        <span class="font-bold text-rose-600" id="hasil-salah">-</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-slate-500 font-medium">Tingkat Penguasaan Kompetensi</span>
+                        <span class="font-bold text-indigo-600" id="hasil-persen">-</span>
+                    </div>
+                </div>
+
+                <!-- Section Pembahasan Soal -->
+                <div id="pembahasan-container" class="mt-5 text-left hidden">
+                    <h3 class="font-extrabold text-sm text-slate-800 border-b border-slate-200 pb-2 mb-3">Evaluasi & Pembahasan Soal HOTS</h3>
+                    <div id="pembahasan-list" class="space-y-3 max-h-[250px] overflow-y-auto pr-2 custom-scrollbar">
+                        <!-- Dynamic Review Items -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-4 mt-4 border-t border-slate-200 flex flex-wrap sm:flex-nowrap gap-2.5 flex-shrink-0">
+                <button onclick="togglePembahasan()" id="btn-toggle-pembahasan" class="w-full sm:w-1/3 bg-slate-800 hover:bg-slate-900 text-white font-bold py-2.5 px-3 rounded-xl text-xs transition">
+                    Lihat Pembahasan
+                </button>
+                <button onclick="location.reload()" class="w-full sm:w-1/3 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-2.5 px-3 rounded-xl text-xs transition">
+                    Ulangi Ujian
+                </button>
+                <button onclick="window.print()" class="w-full sm:w-1/3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 px-3 rounded-xl text-xs shadow transition">
+                    Cetak Sertifikat Hasil
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-slate-200 py-3 text-center text-xs text-slate-600 flex-shrink-0 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-4 px-4">
+        <span>&copy; 2026 Asesmen Kompetensi RPL &bull; Konsentrasi Keahlian Rekayasa Perangkat Lunak SMK</span>
+        <span class="hidden sm:inline text-slate-300">|</span>
+        <span class="font-bold text-slate-800 bg-slate-100 px-3 py-0.5 rounded-full border border-slate-200 tracking-wide">Web by Redho Ari Meratno</span>
+    </footer>
+
+    <script>
+        // 50 Soal HOTS ATP RPL Fase F (4 Elemen Utama)
+        const bankSoal = [
+            // ELEMEN 1: BASIS DATA (13 Soal)
+            {
+                id: 1,
+                elemen: "Basis Data",
+                soal: "Sebuah aplikasi E-Commerce mengalami kelambatan query saat menampilkan daftar produk berdasarkan kategori dan harga. Setelah dianalisis, tabel 'produk' memiliki 1.000.000 baris tanpa indeks. Langkah DDL mana yang paling efektif untuk mengoptimalkan performa pencarian tanpa mengorbankan kecepatan operasi INSERT secara berlebihan?",
+                pilihan: [
+                    "Membuat Clustered Index pada kolom deskripsi produk",
+                    "Membuat Composite Non-Clustered Index pada kolom (kategori_id, harga)",
+                    "Membuat indeks terpisah pada setiap kolom di tabel produk",
+                    "Mengubah primary key tabel produk menjadi UUID",
+                    "Menghapus foreign key yang terhubung ke tabel kategori"
+                ],
+                kunci: 1,
+                pembahasan: "Composite Non-Clustered Index pada kolom yang sering digabungkan dalam klausul WHERE (kategori_id dan harga) secara signifikan mempercepat SELECT query tanpa beban berlebih pada INSERT dibanding indeks individual pada semua kolom."
+            },
+            {
+                id: 2,
+                elemen: "Basis Data",
+                soal: "Dalam sistem perbankan, Stored Procedure transfer dana mengalami Kegagalan Transaksi di tengah jalan akibat terputusnya koneksi saat pengurangan saldo pengirim selesai, namun penambahan saldo penerima belum dieksekusi. Fitur transaksi SQL mana yang wajib diterapkan untuk mencegah inkonsistensi saldo?",
+                pilihan: [
+                    "Menerapkan mekanisme Auto-Increment",
+                    "Menggunakan klausa SAVEPOINT tanpa COMMIT",
+                    "Bungkus perintah dalam START TRANSACTION, jalankan COMMIT jika berhasil, dan ROLLBACK saat CATCH Exception",
+                    "Mengubah Isolation Level menjadi READ UNCOMMITTED",
+                    "Menggunakan Trigger BEFORE UPDATE"
+                ],
+                kunci: 2,
+                pembahasan: "Prinsip Atomicity pada ACID memerlukan pembungkusan perintah transfer dalam blok transaksi (START TRANSACTION/COMMIT/ROLLBACK) sehingga jika satu langkah gagal, seluruh perubahan dibatalkan (ROLLBACK)."
+            },
+            {
+                id: 3,
+                elemen: "Basis Data",
+                soal: "Sebuah aplikasi perpustakaan membutuhkan aturan: 'Setiap kali status peminjaman buku berubah menjadi 'KEMBALI', stok buku di tabel buku harus bertambah +1 secara otomatis'. Fitur basis data yang paling tepat untuk mengimplementasikan logika otomatis ini di level database adalah...",
+                pilihan: [
+                    "DCL (Data Control Language) GRANT UPDATE",
+                    "AFTER UPDATE Trigger pada tabel peminjaman",
+                    "BEFORE DELETE Trigger pada tabel buku",
+                    "Stored Function dengan klausa DETERMINISTIC",
+                    "View berbasis INNER JOIN"
+                ],
+                kunci: 1,
+                pembahasan: "AFTER UPDATE Trigger pada tabel peminjaman sangat tepat untuk mendeteksi perubahan status dan mengeksekusi otomatis perintah UPDATE stok pada tabel buku."
+            },
+            {
+                id: 4,
+                soal: "Query SELECT nama, gaji FROM pegawai WHERE gaji > ALL (SELECT gaji FROM pegawai WHERE departemen_id = 3) menampilkan pegawai dengan kondisi apa?",
+                pilihan: [
+                    "Menampilkan pegawai yang gajinya lebih besar dari rata-rata gaji departemen 3",
+                    "Menampilkan pegawai yang gajinya lebih besar dari setidaknya satu pegawai di departemen 3",
+                    "Menampilkan pegawai yang gajinya lebih besar dari seluruh pegawai yang ada di departemen 3",
+                    "Menampilkan pegawai yang gajinya sama dengan pegawai tertinggi di departemen 3",
+                    "Query menghasilkan syntax error karena pemakaian operator ALL"
+                ],
+                kunci: 2,
+                pembahasan: "Operator `> ALL` berarti nilai harus lebih besar dari semua nilai hasil subquery (dalam hal ini lebih tinggi dari nilai maksimum gaji di departemen 3)."
+            },
+            {
+                id: 5,
+                soal: "Pengembang basis data ingin merancang strategi Master-Slave Replication. Dampak arsitektural mana yang benar terkait pembagian beban kerja operasi database?",
+                pilihan: [
+                    "Node Master menangani READ saja, Node Slave menangani WRITE saja",
+                    "Node Master menangani WRITE & READ berat, Node Slave hanya sebagai cadangan offline",
+                    "Node Master menangani operasi WRITE/UPDATE, sedangkan Node Slave menerima sinkronisasi dan melayani query READ",
+                    "Node Slave langsung mengubah data di Node Master secara synchronous real-time tanpa delay",
+                    "Tidak ada perbedaan fungsi antar node"
+                ],
+                kunci: 2,
+                pembahasan: "Dalam arsitektur Replikasi Master-Slave, Master berfokus melayani query penulisan data (WRITE), lalu direplikasi ke Slave yang dikhususkan melayani pembacaan data (READ)."
+            },
+            {
+                id: 6,
+                soal: "Tabel 'Pesanan' terhubung dengan tabel 'Pelanggan' melalui foreign key 'id_pelanggan'. Jika tim DBA ingin memastikan bahwa data pelanggan TIDAK BISA DIHAPUS apabila pelanggan tersebut masih memiliki riwayat pesanan aktif, klausa DDL Foreign Key mana yang digunakan?",
+                pilihan: [
+                    "ON DELETE CASCADE",
+                    "ON DELETE SET NULL",
+                    "ON DELETE RESTRICT / NO ACTION",
+                    "ON DELETE SET DEFAULT",
+                    "ON UPDATE CASCADE"
+                ],
+                kunci: 2,
+                pembahasan: "ON DELETE RESTRICT atau NO ACTION mencegah penghapusan baris pada tabel induk (Pelanggan) jika ID tersebut masih dirujuk oleh tabel anak (Pesanan)."
+            },
+            {
+                id: 7,
+                soal: "Tabel transaksi penjualan memiliki 5 juta baris data. Analisis kebutuhan meminta laporan penjualan bulanan dalam bentuk ringkasan aggregated data. Teknik basis data manakah yang paling cepat menyajikan data ini tanpa melakukan scan ulang jutaan baris setiap kali diakses?",
+                pilihan: [
+                    "Membuat Dynamic View biasa",
+                    "Membuat Materialized View / Summary Table yang di-refresh berkala",
+                    "Melakukan pemanggilan Stored Procedure bertingkat",
+                    "Menggunakan fungsi aggregate SUM() langsung di tabel utama tanpa indeks",
+                    "Mengkonversi data menjadi file CSV"
+                ],
+                kunci: 1,
+                pembahasan: "Materialized View menyimpan hasil kalkulasi query agregat secara fisik ke disk, sehingga pemanggilan laporan jauh lebih cepat daripada query agregat berulang pada tabel utama."
+            },
+            {
+                id: 8,
+                soal: "Sebuah aplikasi Rumah Sakit mengalami Anomali Modifikasi Data karena informasi resep obat disimpan dalam satu tabel raksasa bersama data pasien, dokter, dan tagihan. Langkah normalisasi data yang benar untuk mencapai 3NF adalah...",
+                pilihan: [
+                    "Membiarkan data dalam bentuk Unnormalized Form (UNF)",
+                    "Memisahkan entitas ke tabel berelasi terpisah dan menghilangkan Transitive Dependency",
+                    "Menghapus semua Primary Key pada tabel utama",
+                    "Menggabungkan semua kolom bertipe VARCHAR menjadi TEXT",
+                    "Membuat Composite Key di setiap tabel tanpa Foreign Key"
+                ],
+                kunci: 1,
+                pembahasan: "Syarat 3NF adalah memenuhi 2NF dan tidak memiliki Ketergantungan Transitif (Transitive Dependency), yaitu memisahkan entitas ke tabel tersendiri yang saling terhubung via Foreign Key."
+            },
+            {
+                id: 9,
+                soal: "Developer hendak memberikan hak akses terbatas kepada staf Kasir agar HANYA bisa membaca dan menambahkan data pada tabel 'penjualan', namun TIDAK BISA menghapus atau mengubah struktur tabel. Perintah DCL yang tepat adalah...",
+                pilihan: [
+                    "GRANT ALL PRIVILEGES ON database.* TO 'kasir'@'localhost';",
+                    "GRANT SELECT, INSERT ON database.penjualan TO 'kasir'@'localhost';",
+                    "REVOKE ALL ON database.penjualan FROM 'kasir'@'localhost';",
+                    "GRANT UPDATE, DELETE ON database.penjualan TO 'kasir'@'localhost';",
+                    "ALTER USER 'kasir'@'localhost' WITH SUPERUSER;"
+                ],
+                kunci: 1,
+                pembahasan: "Perintah DCL `GRANT SELECT, INSERT` secara rinci memberikan izin baca dan tambah data saja pada tabel spesifik."
+            },
+            {
+                id: 10,
+                soal: "Manakah perbedaan utama antara Stored Procedure dan Stored Function pada sistem manajemen basis data relasional (RDBMS)?",
+                pilihan: [
+                    "Function tidak boleh menerima parameter masukan",
+                    "Stored Procedure wajib mengembalikan nilai (RETURN) tunggal, sedangkan Function tidak",
+                    "Stored Function wajib mengembalikan satu nilai balik (RETURN) dan bisa dipanggil langsung di dalam klausa SELECT",
+                    "Stored Procedure hanya dapat mengeksekusi DDL, bukan DML",
+                    "Function digunakan untuk Backup dan Restore data saja"
+                ],
+                kunci: 2,
+                pembahasan: "Stored Function mengembalikan satu nilai skalar secara eksplisit (RETURN) dan dapat dipakai dalam ekspresi query SQL/SELECT."
+            },
+            {
+                id: 11,
+                soal: "Prosedur kebencanaan (Disaster Recovery) mensyaratkan basis data harus dapat dipulihkan tepat sebelum insiden korupsi data terjadi pada pukul 14.30. Strategi Backup/Restore mana yang wajib diterapkan?",
+                pilihan: [
+                    "Hanya mengandalkan Full Backup mingguan",
+                    "Kombinasi Full Backup harian + Replikasi Slave offline",
+                    "Kombinasi Full Backup + Incremental/Differential Backup + Point-in-Time Recovery berbasis Binary Log (Binlog)",
+                    "Export tabel ke format JSON secara manual setiap jam",
+                    "Menggunakan RAID 1 pada Server Database tanpa Backup"
+                ],
+                kunci: 2,
+                pembahasan: "Point-in-Time Recovery memanfaatkan gabungan Full Backup dan log transaksi (Binlog) untuk mengulangi (replay) transaksi hingga detik tepat sebelum kerusakan terjadi."
+            },
+            {
+                id: 12,
+                soal: "Query yang mengambil nama_produk dan menyaring harga dari kolom JSON pada tabel pesanan merupakan contoh penerapan teknologi apa?",
+                pilihan: [
+                    "NoSQL murni tanpa skema",
+                    "Relational Database dengan dukungan fitur Semi-Structured Document Data (JSON Querying)",
+                    "Database Grafik berbasis Neo4j",
+                    "Object-Oriented Database Management System (OODBMS)",
+                    "Data Warehouse OLAP Multi-dimensional"
+                ],
+                kunci: 1,
+                pembahasan: "RDBMS modern seperti MySQL/Postgres mendukung penyimpanan dan kueri data terstruktur berformat JSON (Semi-structured data)."
+            },
+            {
+                id: 13,
+                soal: "Masalah 'Deadlock' terjadi pada sistem database multi-user ketika...",
+                pilihan: [
+                    "Dua transaksi atau lebih saling menunggu resource lock yang dipegang transaksi lain secara melingkar",
+                    "Ukuran file database melebihi kapasitas harddisk server",
+                    "Koneksi internet client terputus saat mengunduh file",
+                    "Query SELECT tidak menyertakan klausa WHERE",
+                    "Index database mengalami kerusakan fisik"
+                ],
+                kunci: 0,
+                pembahasan: "Deadlock terjadi ketika Transaksi A menahan Lock 1 dan menunggu Lock 2, sementara Transaksi B menahan Lock 2 dan menunggu Lock 1, menyebabkan pemblokiran abadi."
+            },
+
+            // ELEMEN 2: PEMROGRAMAN BERBASIS TEKS, GRAFIS, DAN MULTIMEDIA (13 Soal)
+            {
+                id: 14,
+                elemen: "Pemrograman Berbasis Teks/Grafis",
+                soal: "Sebuah sistem pengolahan pembayaran memiliki kelas `Pembayaran` dengan method `prosesBayar()`. Kelas turunan `PembayaranTransfer`, `PembayaranQRIS`, dan `PembayaranKartu` meng-override method tersebut dengan perilaku berbeda. Prinsip Pemrograman Berorientasi Objek (OOP) manakah yang diterapkan?",
+                pilihan: [
+                    "Encapsulation",
+                    "Polymorphism (Dynamic Method Overriding)",
+                    "Abstraction melalui Private Interface",
+                    "Composition over Inheritance",
+                    "Multiple Inheritance"
+                ],
+                kunci: 1,
+                pembahasan: "Polimorfisme memungkinkan objek turunan memberikan implementasi spesifik pada method yang di-override dari kelas induknya."
+            },
+            {
+                id: 15,
+                soal: "Dalam perancangan perangkat lunak berorientasi objek, kelas `Mesin` dipasangkan di dalam kelas `Mobil`. Jika objek `Mobil` dihancurkan (garbage collected), objek `Mesin` ikut hancur. Hubungan antar kelas ini dinamakan...",
+                pilihan: [
+                    "Association",
+                    "Aggregation",
+                    "Composition",
+                    "Generalization",
+                    "Dependency"
+                ],
+                kunci: 2,
+                pembahasan: "Composition adalah bentuk hubungan kepemilikan sangat kuat (strong HAS-A), di mana masa hidup objek bagian bergantung penuh pada objek induknya."
+            },
+            {
+                id: 16,
+                soal: "Perhatikan diagram UML Class berikut: Kelas `Aplikasi` menggunakan Design Pattern `Singleton`. Manakah implementasi kode yang benar untuk menjamin HANYA ADA SATU INSTANSI objek dari kelas tersebut?",
+                pilihan: [
+                    "Membuat constructor public dan method instansi bertipe static public",
+                    "Membuat constructor private, memiliki attribute static private instansi diri sendiri, dan method static public `getInstance()`",
+                    "Meng-abstract semua method di dalam kelas",
+                    "Menggunakan keyword `final` pada seluruh variabel lokal",
+                    "Membuat kelas bertipe Interface tanpa method"
+                ],
+                kunci: 1,
+                pembahasan: "Pattern Singleton menyembunyikan constructor (private) agar tidak bisa di-instansiasi dari luar (`new`), dan menyediakan akses global melalui method `getInstance()`."
+            },
+            {
+                id: 17,
+                soal: "Saat membangun aplikasi Desktop GUI (Java Swing / C# WPF), antarmuka mengalami 'Freeze' / Hang saat pengguna menekan tombol 'Proses Export PDF 10.000 Halaman'. Penyebab utama dan solusi arsitektural yang benar adalah...",
+                pilihan: [
+                    "Proses PDF dijalankan di Main UI Thread; solusinya memindahkan proses berat ke Background Thread / Asynchronous Worker",
+                    "Kapasitas memori RAM komputer habis; solusinya menambah RAM",
+                    "Pustaka GUI tidak mendukung ekspor PDF; solusinya mengganti framework GUI",
+                    "Ukuran file PDF terlalu besar; solusinya menghapus gambar di PDF",
+                    "Format file PDF tidak valid"
+                ],
+                kunci: 0,
+                pembahasan: "Tugas berat bertipe I/O atau komputasi lama yang dieksekusi langsung di Main Event/UI Thread akan memblokir rendering antarmuka. Solusinya adalah Multithreading/Async."
+            },
+            {
+                id: 18,
+                soal: "Di dalam pemodelan UML Sequence Diagram, garis panah putus-putus dengan kepala panah terbuka (->) menandakan...",
+                pilihan: [
+                    "Synchronous Call / Pesan Langsung",
+                    "Asynchronous Call tanpa balasan",
+                    "Return Message / Balasan Nilai Kembalian Objek",
+                    "Self Delegation Method Call",
+                    "Create Object Instance"
+                ],
+                kunci: 2,
+                pembahasan: "Garis panah putus-putus pada Sequence Diagram melambangkan Return Message atau respons balasan dari pemanggilan objek."
+            },
+            {
+                id: 19,
+                soal: "Dalam prinsip SOLID Software Design, huruf 'S' (Single Responsibility Principle) menyatakan bahwa...",
+                pilihan: [
+                    "Sebuah kelas hanya boleh diinstansiasi satu kali",
+                    "Sebuah kelas hanya boleh memiliki satu alasan untuk berubah (fokus pada satu tanggung jawab spesifik)",
+                    "Sebuah fungsi tidak boleh memiliki lebih dari satu parameter masukan",
+                    "Sebuah modul harus bisa diakses secara tunggal tanpa dependencies",
+                    "Aplikasi hanya boleh mendukung satu jenis basis data"
+                ],
+                kunci: 1,
+                pembahasan: "Single Responsibility Principle (SRP) menegaskan bahwa setiap modul/kelas harus bertanggung jawab penuh atas satu fungsi bisnis spesifik."
+            },
+            {
+                id: 20,
+                soal: "Saat mengintegrasikan objek Multimedia (Video Streaming) dalam aplikasi desktop, arsitektur mana yang paling ideal agar kontrol pemutar video terpisah penuh dari tampilan GUI dan pemrosesan kode?",
+                pilihan: [
+                    "Pola Spaghetti Code dalam satu file Form",
+                    "Model-View-Controller (MVC) atau Model-View-ViewModel (MVVM)",
+                    "Monolithic Procedural Design",
+                    "Client-Server Direct File Stream",
+                    "Event-Driven tanpa Abstraksi"
+                ],
+                kunci: 1,
+                pembahasan: "Pola MVC/MVVM memisahkan data media (Model), tampilan kontrol GUI (View), dan logika jembatan (Controller/ViewModel) sehingga aplikasi modular dan mudah diuji."
+            },
+            {
+                id: 21,
+                soal: "Sebuah program Python/Java perlu membaca data dari file teks besar. Jika terjadi error 'File Not Found', program harus menangani error secara elegan tanpa terhenti mendadak (crash). Struktur penanganan error yang benar adalah...",
+                pilihan: [
+                    "if-else kondisi biasa",
+                    "Blok try-catch (atau try-except) dengan instruksi pemulihan pada catch block dan penutupan stream pada finally block",
+                    "Memanggil fungsi `system.exit()`",
+                    "Mengabaikan Exception menggunakan keyword `throws` tanpa penanganan",
+                    "Mengubah ekstensi file secara otomatis"
+                ],
+                kunci: 1,
+                pembahasan: "Blok try-catch/except menangani Exception runtime secara terisolasi, sementara blok `finally` menjamin pembersihan resource (seperti menutup stream file) terlepas dari ada/tidaknya error."
+            },
+            {
+                id: 22,
+                soal: "Pola perancangan (Design Pattern) 'Factory Method' dikategorikan ke dalam kelompok Creational Design Pattern karena berfungsi untuk...",
+                pilihan: [
+                    "Mengatur struktur relasi hirarki antar objek",
+                    "Menyediakan antarmuka untuk membuat objek tanpa menentukan kelas spesifik secara eksplisit di kode utama",
+                    "Memantau perubahan status objek lain (Publish-Subscribe)",
+                    "Mengamankan data sensitif dalam objek",
+                    "Mempercepat proses kompilasi kode"
+                ],
+                kunci: 1,
+                pembahasan: "Factory Method mengabstraksi proses instansiasi objek (Creational) sehingga pemanggil tidak perlu berhubungan langsung dengan kelas konkret."
+            },
+            {
+                id: 23,
+                soal: "Saat melakukan Refactoring pada kode lama yang memiliki metode 'God Method' (satu method berisi 500 baris kode dengan banyak percabangan), teknik refactoring pertama yang paling disarankan adalah...",
+                pilihan: [
+                    "Inline Method",
+                    "Extract Method (memecah blok logika kecil menjadi method-method mandiri)",
+                    "Rename Variable menjadi satu huruf",
+                    "Mengubah semua variabel menjadi variabel global",
+                    "Menghapus seluruh Exception Handling"
+                ],
+                kunci: 1,
+                pembahasan: "Extract Method memecah method raksasa menjadi method-method kecil berfokus spesifik sehingga kode lebih mudah dibaca dan diuji (unit test)."
+            },
+            {
+                id: 24,
+                soal: "Pengembang GUI desktop ingin menampilkan daftar 100.000 data transaksi menggunakan komponen `JTable` / `ListView`. Agar konsumsi memori hemat, teknik manakah yang harus dipakai oleh komponen GUI tersebut?",
+                pilihan: [
+                    "Memuat 100.000 objek tampilan sekaligus ke dalam panel",
+                    "Menggunakan Virtualization / Lazy Loading (hanya merender item yang terlihat di viewport layar)",
+                    "Mengubah ukuran font menjadi sangat kecil",
+                    "Menyimpan data di file temporary image",
+                    "Menghentikan fungsi scrollbar"
+                ],
+                kunci: 1,
+                pembahasan: "Teknik Virtualization / UI Lazy Loading merekayasa komponen GUI sehingga hanya membuat elemen visual bagi baris data yang tampil di layar."
+            },
+            {
+                id: 25,
+                soal: "Di bawah ini, manakah yang merupakan ciri khas bahasa pemrograman bertipe Strongly and Statically Typed (seperti Java atau C#) dibandingkan Dynamically Typed (seperti Python atau PHP)?",
+                pilihan: [
+                    "Tipe variabel dievaluasi saat runtime dan tidak perlu dideklarasikan",
+                    "Tipe variabel dikunci saat kompilasi (compile-time) dan pengecekan tipe dilakukan secara ketat sebelum program dijalankan",
+                    "Kode tidak memerlukan proses kompilasi sama sekali",
+                    "Variabel dapat berganti tipe data secara bebas di tengah program",
+                    "Tidak mendukung pemrograman berorientasi objek"
+                ],
+                kunci: 1,
+                pembahasan: "Statically Typed menetapkan tipe data pada waktu kompilasi (compile-time), mencegah kesalahan tipe data sebelum program berhasil dikompilasi."
+            },
+            {
+                id: 26,
+                soal: "UML State Machine Diagram (Statechart) paling tepat digunakan oleh pengembang perangkat lunak untuk memodelkan...",
+                pilihan: [
+                    "Struktur fisik deployment server aplikasi",
+                    "Perubahan kondisi / status siklus hidup (lifecycle) suatu objek akibat event tertentu",
+                    "Alur data antar tabel di basis data",
+                    "Hirarki inheritance antar kelas",
+                    "Daftar kebutuhan fungsional pengguna"
+                ],
+                kunci: 1,
+                pembahasan: "State Machine Diagram memodelkan perubahan state/kondisi sebuah objek tunggal (misal: Pesanan -> Dibayar -> Dikirim -> Selesai) sebagai respon terhadap event."
+            },
+
+            // ELEMEN 3: PEMROGRAMAN WEB (12 Soal)
+            {
+                id: 27,
+                elemen: "Pemrograman Web",
+                soal: "Sebuah situs web e-commerce diserang dengan teknik 'Cross-Site Scripting' (XSS), di mana peretas berhasil menyisipkan skrip `<script>stealCookie()<\/script>` ke dalam kolom ulasan produk. Langkah pencegahan mendasar pada kode server-side adalah...",
+                pilihan: [
+                    "Mengaktifkan HTTPS pada domain server",
+                    "Melakukan Output Sanitization / Escaping pada input karakter khusus HTML sebelum ditampilkan di halaman web",
+                    "Mematikan JavaScript di browser pengguna",
+                    "Menggunakan database NoSQL",
+                    "Menyimpan password dengan MD5"
+                ],
+                kunci: 1,
+                pembahasan: "XSS dicegah dengan memvalidasi input dan melakukan HTML Entity Escaping (Sanitization) pada output agar karakter khusus seperti `<` dan `>` disajikan sebagai teks biasa, bukan kode yang dieksekusi."
+            },
+            {
+                id: 28,
+                elemen: "Pemrograman Web",
+                soal: "Saat membangun Web RESTful API, metode HTTP Method yang BENAR sesuai standar RFC untuk operasi penambahan data baru, pembaruan data parsial, dan penghapusan data secara berturut-turut adalah...",
+                pilihan: [
+                    "GET, POST, DELETE",
+                    "POST, PATCH, DELETE",
+                    "POST, PUT, GET",
+                    "PUT, UPDATE, REMOVE",
+                    "FETCH, SAVE, DROP"
+                ],
+                kunci: 1,
+                pembahasan: "Standar RESTful API: POST (Create data baru), PATCH (Update sebagian field data), DELETE (Remove data)."
+            },
+            {
+                id: 29,
+                elemen: "Pemrograman Web",
+                soal: "Fitur 'Single Page Application' (SPA) menggunakan framework frontend modern (React / Vue) mengakses data dari server secara Asynchronous tanpa mereload seluruh halaman web. Mekanisme komunikasi data yang digunakan di sisi client adalah...",
+                pilihan: [
+                    "Synchronous HTML Form Submission",
+                    "Fetch API / Axios berbasis Promises (AJAX)",
+                    "Server-Side Rendering (SSR) via PHP Native",
+                    "Web Socket Protocol tanpa HTTP Header",
+                    "iFrame Embedding"
+                ],
+                kunci: 1,
+                pembahasan: "SPA memanfaatkan Fetch API atau Axios untuk pertukaran data asynchronous (AJAX) berformat JSON dengan Backend API tanpa reload halaman."
+            },
+            {
+                id: 30,
+                elemen: "Pemrograman Web",
+                soal: "Dalam arsitektur web MVC (Model-View-Controller), saat pengguna mengakses URL `https://toko.com/produk/detail/5`, komponen mana yang PERTAMA KALI menerima request, memproses parameter URL, dan memanggil data dari Model?",
+                pilihan: [
+                    "View",
+                    "Controller (Routing & Logic Controller)",
+                    "Model",
+                    "Database Engine",
+                    "CSS Stylesheet"
+                ],
+                kunci: 1,
+                pembahasan: "Router mengarahkan HTTP Request ke Controller yang bertugas menerima parameter masukan, meminta data ke Model, lalu mengirimkan respons balik ke View."
+            },
+            {
+                id: 31,
+                elemen: "Pemrograman Web",
+                soal: "Mengapa token JWT (JSON Web Token) sering digunakan untuk autentikasi API pada aplikasi web modern?",
+                pilihan: [
+                    "JWT berukuran sangat besar sehingga tidak bisa diretas",
+                    "JWT dapat diverifikasi tanpa menyimpan session di server; payload-nya umumnya hanya di-encode dan dilindungi signature, bukan dienkripsi",
+                    "JWT tidak membutuhkan koneksi internet",
+                    "JWT hanya dapat dibuka menggunakan bahasa Python",
+                    "JWT secara otomatis memblokir IP penyerang"
+                ],
+                kunci: 1,
+                pembahasan: "JWT umumnya bersifat stateless: server memverifikasi signature token tanpa mengambil session dari database. Payload JWT biasa hanya di-encode, bukan dienkripsi, sehingga jangan menyimpan rahasia di dalamnya."
+            },
+            {
+                id: 32,
+                elemen: "Pemrograman Web",
+                soal: "Perhatikan CSS Flexbox dengan display: flex, justify-content: space-between, dan align-items: center. Bagaimana tata letak elemen anak di dalam container?",
+                pilihan: [
+                    "Item disusun menumpuk secara vertikal di pojok kiri atas",
+                    "Item disusun melintang secara horizontal dengan jarak antar item terbagi rata sejajar, dan rata tengah secara vertikal",
+                    "Item tersembunyi dari tampilan browser",
+                    "Item dipaksa memiliki lebar 100%",
+                    "Item berubah menjadi tabel HTML"
+                ],
+                kunci: 1,
+                pembahasan: "`justify-content: space-between` membagi jarak horizontal secara merata antar item, sedangkan `align-items: center` menyelaraskan posisi item secara vertikal di tengah sumbu silang."
+            },
+            {
+                id: 33,
+                elemen: "Pemrograman Web",
+                soal: "Sebuah aplikasi web perbankan mengalami kerentanan CSRF (Cross-Site Request Forgery), di mana korban tidak sengaja mengeksekusi aksi perubahan password saat membuka situs jahat. Mekanisme pertahanan utama web server untuk mencegah CSRF adalah...",
+                pilihan: [
+                    "Menghapus pustaka JavaScript di server",
+                    "Penerapan Anti-CSRF Synchronizer Token pada setiap form / request yang mengubah state",
+                    "Mengubah semua method HTTP POST menjadi GET",
+                    "Menyimpan password dalam Plain Text",
+                    "Mematikan firewall port 80"
+                ],
+                kunci: 1,
+                pembahasan: "CSRF Token adalah string unik rahasia acak yang digenerate oleh server dan divalidasi pada setiap request mutasi data untuk memastikan request sah berasal dari aplikasi asli."
+            },
+            {
+                id: 34,
+                elemen: "Pemrograman Web",
+                soal: "Fitur 'Middleware' pada framework web server-side (seperti Express.js atau Laravel) berfungsi sebagai...",
+                pilihan: [
+                    "Komponen penata tampilan CSS",
+                    "Lapisan penengah yang mencegat (intercept) HTTP Request sebelum mencapai Controller untuk keperluan verifikasi autentikasi, logging, atau CORS",
+                    "Sistem manajemen basis data utama",
+                    "Penerjemah kode HTML ke bahasa Assembly",
+                    "Penyimpan berkas gambar di browser"
+                ],
+                kunci: 1,
+                pembahasan: "Middleware adalah layer filter HTTP request yang berada di antara request masuk dan controller akhir (dapat memeriksa token login, validasi header, dll)."
+            },
+            {
+                id: 35,
+                elemen: "Pemrograman Web",
+                soal: "Di dalam DOM (Document Object Model) Manipulation menggunakan JavaScript, teknik 'Event Delegation' diimplementasikan dengan cara...",
+                pilihan: [
+                    "Memasang Event Listener individu ke setiap 1.000 tombol elemen anak",
+                    "Memasang satu Event Listener pada elemen Induk (Parent) dan memanfaatkan Event Bubbling untuk mendeteksi klik pada elemen anak",
+                    "Menghapus seluruh event saat halaman di-scroll",
+                    "Menggunakan fungsi `setTimeout()` secara berulang",
+                    "Menghentikan fungsi AJAX"
+                ],
+                kunci: 1,
+                pembahasan: "Event Delegation memasang satu listener pada induk elemen. Kerja event bubbling membawa event klik dari anak ke induk, sehingga sangat efisien dalam penggunaan memori."
+            },
+            {
+                id: 36,
+                elemen: "Pemrograman Web",
+                soal: "Protokol WebSocket berbeda signifikan dari HTTP Request-Response biasa karena WebSocket menyediakan komunikasi...",
+                pilihan: [
+                    "Half-Duplex unidirectional",
+                    "Full-Duplex Bidirectional secara Real-Time melalui satu koneksi TCP persisten",
+                    "Stateless tanpa handshake",
+                    "Hanya mendukung pengiriman berkas gambar",
+                    "Hanya bisa diakses melalui jaringan lokal"
+                ],
+                kunci: 1,
+                pembahasan: "WebSocket membuka saluran komunikasi dua arah (Full-Duplex) yang terus terbuka antara client dan server secara real-time."
+            },
+            {
+                id: 37,
+                elemen: "Pemrograman Web",
+                soal: "Pengembang web ingin memastikan situs web merespons tampilan dengan baik saat dibuka di Smartphone, Tablet, maupun Monitor Ultra-Wide. Aturan CSS paling fundamental yang WAJIB dicantumkan adalah...",
+                pilihan: [
+                    "Menggunakan ukuran pixel (px) statis pada semua kontainer",
+                    "Penggunaan Media Queries (`@media`) dan Fluid Layouts (persentase/rem/em/flex/grid) serta meta viewport tag",
+                    "Membuat file domain terpisah untuk setiap merk smartphone",
+                    "Mengubah semua teks menjadi format gambar JPG",
+                    "Mematikan fitur responsive"
+                ],
+                kunci: 1,
+                pembahasan: "Responsive Web Design mengandalkan Meta Viewport Tag, CSS Media Queries, serta unit relatif (rem/flex/grid) untuk menyesuaikan layout secara dinamis."
+            },
+            {
+                id: 38,
+                elemen: "Pemrograman Web",
+                soal: "Teknik 'Server-Side Rendering' (SSR) pada framework Next.js / Nuxt.js memberikan keunggulan dibanding Client-Side Rendering (CSR) standar dalam hal...",
+                pilihan: [
+                    "Menghilangkan kebutuhan web server",
+                    "Peningkatan performa SEO (Search Engine Optimization) dan Initial Page Load karena HTML dirender lengkap di server sebelum dikirim ke browser",
+                    "Ukuran kode JavaScript menjadi 0 byte",
+                    "Aplikasi tidak lagi memerlukan basis data",
+                    "Kecepatan kompilasi CSS yang lebih tinggi"
+                ],
+                kunci: 1,
+                pembahasan: "SSR merender HTML matang di server. Search Engine Crawler (Googlebot) dapat langsung mengindeks konten secara lengkap, meningkatkan SEO & waktu First Contentful Paint."
+            },
+
+            // ELEMEN 4: PEMROGRAMAN PERANGKAT BERGERAK (12 Soal)
+            {
+                id: 39,
+                elemen: "Pemrograman Perangkat Bergerak",
+                soal: "Dalam pengembangan aplikasi Android native (Kotlin/Java), aktivitas layar yang terhalang sementara oleh dialog pop-up permission akan mengalami transisi Lifecycle state...",
+                pilihan: [
+                    "onCreate() -> onDestroy()",
+                    "onStart() -> onResume()",
+                    "onResume() -> onPause()",
+                    "onStop() -> onRestart()",
+                    "onPause() -> onDestroy()"
+                ],
+                kunci: 2,
+                pembahasan: "Ketika sebuah Activity kehilangan fokus sebagian (misal tertutup sebagian oleh dialog sistem), callback `onPause()` dieksekusi."
+            },
+            {
+                id: 40,
+                elemen: "Pemrograman Perangkat Bergerak",
+                soal: "Di dalam framework Flutter / React Native, konsep 'State Management' (seperti BLoC, Provider, atau Redux) sangat penting untuk mengatasi permasalahan...",
+                pilihan: [
+                    "Ukuran file APK yang terlalu kecil",
+                    "Prop Drilling (mengirim data state secara manual melewati banyak tingkat hirarki komponen UI) dan sinkronisasi tampilan data",
+                    "Ketersediaan koneksi Bluetooth",
+                    "Format warna layar smartphone",
+                    "Pendaftaran akun di Play Store"
+                ],
+                kunci: 1,
+                pembahasan: "State Management menyediakan wadah terpusat untuk menyimpan data aplikasi, menghindari masalah Prop Drilling berlebihan pada pohon widget/komponen."
+            },
+            {
+                id: 41,
+                elemen: "Pemrograman Perangkat Bergerak",
+                soal: "Pengembang aplikasi seluler ingin menyimpan token login dan setelan preferensi pengguna berukuran kecil yang tetap tersimpan meskipun aplikasi ditutup. Komponen penyimpanan lokal yang paling efisien adalah...",
+                pilihan: [
+                    "Database PostgreSQL Remote",
+                    "SharedPreferences / Encrypted DataStore (Android) atau NSUserDefaults / Keychain (iOS)",
+                    "Menulis teks di direktori SD Card publik",
+                    "Membuat file CSV di memori temporary",
+                    "Variabel global di memori RAM"
+                ],
+                kunci: 1,
+                pembahasan: "SharedPreferences / DataStore dirancang khusus menyimpan data sederhana berbasis Key-Value secara efisien di penyimpanan internal terisolasi aplikasi."
+            },
+            {
+                id: 42,
+                elemen: "Pemrograman Perangkat Bergerak",
+                soal: "Aplikasi Mobile E-Wallet harus terus memperbarui data lokasi GPS pengguna di latar belakang (Background Process) meskipun pengguna sedang membuka aplikasi lain. Komponen Android manakah yang digunakan?",
+                pilihan: [
+                    "BroadcastReceiver biasa",
+                    "Foreground Service dilengkapi dengan Persistent Notification",
+                    "ContentProvider",
+                    "Explicit Intent",
+                    "Fragment UI"
+                ],
+                kunci: 1,
+                pembahasan: "Untuk tugas latar belakang berdurasi panjang yang butuh kepastian tidak dibunuh oleh OS (seperti GPS tracking), Android mewajibkan Foreground Service dengan notifikasi aktif."
+            },
+            {
+                id: 43,
+                elemen: "Pemrograman Perangkat Bergerak",
+                soal: "Mengapa arsitektur 'MVVM' (Model-View-ViewModel) dengan 'LiveData / StateFlow' sangat direkomendasikan dalam pembuatan aplikasi mobile modern?",
+                pilihan: [
+                    "Agar aplikasi dapat berjalan tanpa menggunakan layar touch screen",
+                    "Memisahkan logika bisnis dari komponen UI, serta mampu mempertahankan data saat terjadi perubahan konfigurasi layar (seperti rotasi layar)",
+                    "Menghilangkan proses kompilasi kode",
+                    "Menggantikan fungsi API backend",
+                    "Meningkatkan resolusi kamera HP"
+                ],
+                kunci: 1,
+                pembahasan: "ViewModel bertahan dari siklus rotasi layar (Configuration Change), mencegah data hilang atau pemanggilan API berulang saat orientasi HP berubah."
+            },
+            {
+                id: 44,
+                elemen: "Pemrograman Perangkat Bergerak",
+                soal: "Saat melakukan pengujian komunikasi data REST API di aplikasi mobile pada koneksi internet lambat, pengembang wajib menerapkan teknik UX/UI yaitu...",
+                pilihan: [
+                    "Menampilkan layar hitam polos sampai data dimuat",
+                    "Menerapkan Shimmer Loading Effect / Progress Indicator dan menangani Timeout Error dengan pesan yang jelas",
+                    "Menutup aplikasi secara paksa (Force Close)",
+                    "Menghapus cache HP pengguna",
+                    "Mematikan tombol back"
+                ],
+                kunci: 1,
+                pembahasan: "Pemberian respons visual berupa Loading Indicator/Shimmer dan penanganan Exception Timeout menjamin kenyamanan pengguna (UX) saat koneksi terganggu."
+            },
+            {
+                id: 45,
+                elemen: "Pemrograman Perangkat Bergerak",
+                soal: "Di dalam penyimpanan basis data lokal mobile menggunakan Room Persistence Library (SQLite Abstraction), anotasi `@Entity`, `@Dao`, dan `@Database` berturut-turut berfungsi untuk...",
+                pilihan: [
+                    "Mendesain UI, Membuat API, Menghapus Cache",
+                    "Mendefinisikan Struktur Tabel, Antarmuka Query SQL (Data Access Object), dan Instance Pemegang Database",
+                    "Mengatur Warna, Ukuran Font, dan Layout",
+                    "Menyimpan Gambar, Audio, dan Video",
+                    "Menghubungkan Bluetooth, Wi-Fi, dan NFC"
+                ],
+                kunci: 1,
+                pembahasan: "Pada Room DB: `@Entity` menentukan tabel, `@Dao` memuat method query SQL (INSERT/UPDATE/SELECT), dan `@Database` merepresentasikan pemegang basis data."
+            },
+            {
+                id: 46,
+                elemen: "Pemrograman Perangkat Bergerak",
+                soal: "Sebuah aplikasi seluler perlu menerima notifikasi pesan 'Push Notification' dari server secara real-time meskipun aplikasi sedang TIDAK DIBUKA oleh pengguna. Layanan cloud standar industri yang dipakai adalah...",
+                pilihan: [
+                    "Google Drive API",
+                    "Firebase Cloud Messaging (FCM) / Apple Push Notification service (APNs)",
+                    "FTP Remote Server",
+                    "OAuth 2.0 Client",
+                    "WebDAV"
+                ],
+                kunci: 1,
+                pembahasan: "FCM dan APNs adalah infrastruktur push notification resmi yang memelihara jalur koneksi hemat baterai dengan sistem operasi seluler."
+            },
+            {
+                id: 47,
+                elemen: "Pemrograman Perangkat Bergerak",
+                soal: "Perbedaan mendasar antara 'Stateless Widget' dan 'Stateful Widget' dalam pengkodean antarmuka Flutter adalah...",
+                pilihan: [
+                    "Stateless Widget memerlukan basis data SQL",
+                    "Stateless Widget bersifat immutable (tampilan tidak berubah berdasarkan konfigurasi internal data), sedangkan Stateful Widget memiliki State mutable yang dapat mere-render UI saat `setState()` dipanggil",
+                    "Stateful Widget tidak bisa dipasang di smartphone Android",
+                    "Stateless Widget hanya bisa menampilkan teks tanpa warna",
+                    "Tidak ada perbedaan sama sekali"
+                ],
+                kunci: 1,
+                pembahasan: "Stateful Widget menyimpan data dinamis (state). Ketika data berubah dan `setState()` dipanggil, framework akan merender ulang (rebuild) tampilan widget tersebut."
+            },
+            {
+                id: 48,
+                elemen: "Pemrograman Perangkat Bergerak",
+                soal: "Aplikasi seluler memerlukan izin untuk mengakses Kamera dan Mikrofon pengguna pada Android 6.0 (API 23) ke atas. Langkah pemrograman yang BENAR adalah...",
+                pilihan: [
+                    "Cukup mendaftarkan permission di file AndroidManifest.xml saja",
+                    "Mendaftarkan permission di AndroidManifest.xml DAN meminta Runtime Permission secara eksplisit kepada pengguna saat fitur hendak digunakan",
+                    "Tidak perlu meminta izin apapun karena sistem mengizinkan secara otomatis",
+                    "Meminta pengguna merooting smartphone mereka",
+                    "Mengubah file APK menjadi file ZIP"
+                ],
+                kunci: 1,
+                pembahasan: "Android Mensyaratkan Runtime Permission: Izin berbahaya (Camera, Location, Mic) harus terdaftar di Manifest DAN wajib dimintai persetujuan dialog runtime ke pengguna."
+            },
+            {
+                id: 49,
+                elemen: "Pemrograman Perangkat Bergerak",
+                soal: "Teknik 'Deep Linking' pada aplikasi perangkat bergerak berguna untuk...",
+                pilihan: [
+                    "Mempercepat pengisian daya baterai HP",
+                    "Membuka halaman/konten spesifik di dalam aplikasi seluler secara langsung saat pengguna mengklik sebuah Link URL di browser atau pesan SMS",
+                    "Mengompres ukuran gambar secara otomatis",
+                    "Menghapus malware dari OS seluler",
+                    "Mengubah jaringan 4G menjadi 5G"
+                ],
+                kunci: 1,
+                pembahasan: "Deep Linking memetakan struktur URI/URL web menuju ke Activity/Screen spesifik di dalam aplikasi mobile yang terpasang di HP."
+            },
+            {
+                id: 50,
+                elemen: "Pemrograman Perangkat Bergerak",
+                soal: "Saat menerbitkan (publish) aplikasi Android ke Google Play Store, pengembang wajib merilis berkas dalam format modern 'Android App Bundle' (.aab) alih-alih file .apk standar karena...",
+                pilihan: [
+                    "File .aab tidak mengandung kode pemrograman",
+                    "Play Console akan mengoptimalkan dan menggenerasi APK spesifik sesuai konfigurasi arsitektur perangkat (CPU/Screen) pengguna, menghemat ukuran unduhan",
+                    "File .aab dapat dijalankan di komputer tanpa emulator",
+                    "File .aab membuat aplikasi menjadi gratis sepenuhnya",
+                    "File .aab tidak bisa di-update lagi di masa depan"
+                ],
+                kunci: 1,
+                pembahasan: "Format App Bundle (.aab) memungkinkan Google Play Dynamic Delivery untuk merakit dan menyajikan APK teroptimasi ukuran hanya sesuai spesifikasi HP pengguna."
+            }
+        ];
+
+        // State Aplikasi CBT
+        let currentSoalIndex = 0;
+        let jawabanUser = new Array(bankSoal.length).fill(null);
+        let raguRaguStatus = new Array(bankSoal.length).fill(false);
+        let currentToken = "RPL50";
+        let timerInterval = null;
+        let sisaDetik = 90 * 60; // Total 90 Menit
+
+        function generateNewToken() {
+            const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+            let token = "";
+            for (let i = 0; i < 5; i++) {
+                token += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            currentToken = token;
+            document.getElementById("token-display").innerText = currentToken;
+        }
+
+        document.getElementById("form-login").addEventListener("submit", function(e) {
+            e.preventDefault();
+            const inputToken = document.getElementById("token-input").value.trim().toUpperCase();
+            const errorBox = document.getElementById("error-msg");
+            const namaVal = document.getElementById("nama").value;
+            const usernameVal = document.getElementById("username").value;
+
+            if (inputToken !== currentToken) {
+                errorBox.innerText = `Token ujian salah! Masukkan token aktif (${currentToken}).`;
+                errorBox.classList.remove("hidden");
+                return;
+            }
+
+            errorBox.classList.add("hidden");
+
+            // Header Info
+            document.getElementById("nav-nama").innerText = namaVal;
+            document.getElementById("nav-username").innerText = usernameVal;
+            document.getElementById("header-user-info").classList.remove("hidden");
+
+            // Switch Screen
+            document.getElementById("page-login").classList.add("hidden");
+            document.getElementById("page-hasil").classList.add("hidden");
+            document.getElementById("page-ujian").classList.remove("hidden");
+
+            initUjian();
+        });
+
+        function initUjian() {
+            renderSoal();
+            renderGridNomor();
+            mulaiTimer();
+        }
+
+        function mulaiTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+            const timerBox = document.getElementById("timer-box");
+
+            timerInterval = setInterval(() => {
+                if (sisaDetik <= 0) {
+                    clearInterval(timerInterval);
+                    alert("Waktu ujian telah habis! Jawaban Anda akan otomatis dikumpulkan.");
+                    selesaiUjian();
+                    return;
+                }
+                sisaDetik--;
+                
+                let jam = Math.floor(sisaDetik / 3600);
+                let menit = Math.floor((sisaDetik % 3600) / 60);
+                let detik = sisaDetik % 60;
+                
+                document.getElementById("timer-text").innerText = 
+                    String(jam).padStart(2, '0') + ":" + 
+                    String(menit).padStart(2, '0') + ":" + 
+                    String(detik).padStart(2, '0');
+
+                if (sisaDetik <= 300) {
+                    timerBox.classList.remove("bg-slate-900", "text-amber-400");
+                    timerBox.classList.add("bg-rose-600", "text-white", "animate-pulse");
+                }
+            }, 1000);
+        }
+
+        function getElemenSoal(index, soal) {
+            if (soal.elemen) return soal.elemen;
+            if (index < 13) return "Basis Data";
+            if (index < 26) return "Pemrograman Berbasis Teks/Grafis";
+            if (index < 38) return "Pemrograman Web";
+            return "Pemrograman Perangkat Bergerak";
+        }
+
+        function renderSoal() {
+            const soalObj = bankSoal[currentSoalIndex];
+            if (!soalObj || !Array.isArray(soalObj.pilihan) || soalObj.pilihan.length === 0) {
+                document.getElementById("soal-teks").textContent = "Soal tidak tersedia. Silakan pilih nomor soal lain.";
+                document.getElementById("options-container").replaceChildren();
+                return;
+            }
+            document.getElementById("badge-nomor").innerText = `Soal No. ${currentSoalIndex + 1}`;
+            document.getElementById("elemen-badge").innerText = `Elemen: ${getElemenSoal(currentSoalIndex, soalObj)}`;
+            document.getElementById("progress-info").innerText = `${currentSoalIndex + 1} / ${bankSoal.length}`;
+            document.getElementById("soal-teks").innerText = soalObj.soal;
+
+            const optContainer = document.getElementById("options-container");
+            optContainer.replaceChildren();
+
+            soalObj.pilihan.forEach((pil, idx) => {
+                const hurufOpsi = String.fromCharCode(65 + idx);
+                const isChecked = jawabanUser[currentSoalIndex] === idx;
+                const label = document.createElement("label");
+                label.className = `flex items-start p-3.5 rounded-xl border transition cursor-pointer select-none ${isChecked ? "bg-indigo-50 border-indigo-600 ring-1 ring-indigo-500 shadow-2xs" : "bg-slate-50/70 border-slate-200 hover:bg-slate-100/80"}`;
+
+                const input = document.createElement("input");
+                input.type = "radio";
+                input.name = "pilihan-soal";
+                input.value = idx;
+                input.checked = isChecked;
+                input.className = "mt-0.5 text-indigo-600 focus:ring-indigo-500 h-4 w-4 flex-shrink-0";
+                input.addEventListener("change", () => pilihJawaban(idx));
+
+                const text = document.createElement("span");
+                text.className = "ml-3 text-xs sm:text-sm text-slate-800 leading-relaxed";
+                const letter = document.createElement("strong");
+                letter.className = "mr-1.5 text-indigo-900";
+                letter.textContent = `${hurufOpsi}.`;
+                text.append(letter, document.createTextNode(` ${pil}`));
+                label.append(input, text);
+                optContainer.appendChild(label);
+            });
+
+            document.getElementById("ragu-ragu").checked = raguRaguStatus[currentSoalIndex];
+
+            document.getElementById("btn-prev").disabled = currentSoalIndex === 0;
+            const btnNext = document.getElementById("btn-next");
+            if (currentSoalIndex === bankSoal.length - 1) {
+                btnNext.innerText = "Akhiri Ujian";
+                btnNext.classList.remove("bg-indigo-600", "hover:bg-indigo-700");
+                btnNext.classList.add("bg-emerald-600", "hover:bg-emerald-700");
+            } else {
+                btnNext.innerText = "Selanjutnya →";
+                btnNext.classList.remove("bg-emerald-600", "hover:bg-emerald-700");
+                btnNext.classList.add("bg-indigo-600", "hover:bg-indigo-700");
+            }
+
+            renderGridNomor();
+        }
+
+        function pilihJawaban(idx) {
+            jawabanUser[currentSoalIndex] = idx;
+            renderGridNomor();
+            renderSoal();
+        }
+
+        function toggleRagu() {
+            raguRaguStatus[currentSoalIndex] = document.getElementById("ragu-ragu").checked;
+            renderGridNomor();
+        }
+
+        function nextSoal() {
+            if (currentSoalIndex < bankSoal.length - 1) {
+                currentSoalIndex++;
+                renderSoal();
+            } else {
+                konfirmasiSelesai();
+            }
+        }
+
+        function prevSoal() {
+            if (currentSoalIndex > 0) {
+                currentSoalIndex--;
+                renderSoal();
+            }
+        }
+
+        function goToSoal(index) {
+            currentSoalIndex = index;
+            renderSoal();
+        }
+
+        function renderGridNomor() {
+            const gridContainer = document.getElementById("grid-nomor");
+            if (!gridContainer) return;
+            gridContainer.style.display = "grid";
+            gridContainer.style.gridTemplateColumns = "repeat(5, minmax(0, 1fr))";
+            gridContainer.style.gap = "0.375rem";
+
+            const buttons = bankSoal.map((_, idx) => {
+                let statusClass = "bg-white border-slate-200 text-slate-700 hover:bg-slate-100";
+                if (raguRaguStatus[idx]) {
+                    statusClass = "bg-amber-400 border-amber-500 text-slate-950 font-bold";
+                } else if (jawabanUser[idx] !== null) {
+                    statusClass = "bg-indigo-600 border-indigo-700 text-white font-bold";
+                }
+                if (idx === currentSoalIndex) {
+                    statusClass += " ring-2 ring-offset-1 ring-slate-900 font-extrabold";
+                }
+
+                const button = document.createElement("button");
+                button.type = "button";
+                button.className = `h-8 rounded-lg border text-xs flex items-center justify-center transition shadow-2xs font-mono-code ${statusClass}`;
+                button.textContent = String(idx + 1);
+                button.setAttribute("aria-label", `Buka soal nomor ${idx + 1}`);
+                button.setAttribute("aria-current", idx === currentSoalIndex ? "true" : "false");
+                button.addEventListener("click", () => goToSoal(idx));
+                return button;
+            });
+
+            gridContainer.replaceChildren(...buttons);
+        }
+
+        function konfirmasiSelesai() {
+            let belumDijawab = jawabanUser.filter(val => val === null).length;
+            let pesanKonfirmasi = "Apakah Anda yakin ingin menyelesaikan dan mengumpulkan jawaban ujian?";
+            if (belumDijawab > 0) {
+                pesanKonfirmasi = `Perhatian! Masih ada ${belumDijawab} soal yang belum dijawab. Yakin tetap ingin mengumpulkan?`;
+            }
+
+            if (confirm(pesanKonfirmasi)) {
+                selesaiUjian();
+            }
+        }
+
+        function selesaiUjian() {
+            if (timerInterval) clearInterval(timerInterval);
+
+            let totalBenar = 0;
+            let totalSalah = 0;
+            bankSoal.forEach((soal, idx) => {
+                if (jawabanUser[idx] === soal.kunci) {
+                    totalBenar++;
+                } else {
+                    totalSalah++;
+                }
+            });
+
+            let skorAkhir = Math.round((totalBenar / bankSoal.length) * 100);
+
+            document.getElementById("hasil-nama").innerText = document.getElementById("nama").value;
+            document.getElementById("hasil-username").innerText = document.getElementById("username").value;
+            document.getElementById("hasil-benar").innerText = `${totalBenar} Soal`;
+            document.getElementById("hasil-salah").innerText = `${totalSalah} Soal`;
+            document.getElementById("hasil-skor").innerText = skorAkhir;
+            document.getElementById("hasil-persen").innerText = `${skorAkhir}%`;
+
+            const statusEl = document.getElementById("status-kelulusan");
+            if (skorAkhir >= 75) {
+                statusEl.innerText = "LULUS (MEMENUHI KKM KOMPETENSI KEAKLIAN RPL)";
+                statusEl.className = "text-xs font-bold text-emerald-400 mt-1 uppercase tracking-wide";
+            } else {
+                statusEl.innerText = "BELUM LULUS (DI BAWAH KKM STANDAR 75)";
+                statusEl.className = "text-xs font-bold text-rose-400 mt-1 uppercase tracking-wide";
+            }
+
+            renderPembahasanList();
+
+            document.getElementById("page-ujian").classList.add("hidden");
+            document.getElementById("page-hasil").classList.remove("hidden");
+        }
+
+        function renderPembahasanList() {
+            const listEl = document.getElementById("pembahasan-list");
+            listEl.replaceChildren();
+
+            bankSoal.forEach((soal, idx) => {
+                const userAns = jawabanUser[idx];
+                const isCorrect = userAns === soal.kunci;
+                const hurufKunci = String.fromCharCode(65 + soal.kunci);
+                const hurufUser = userAns !== null ? String.fromCharCode(65 + userAns) : "Kosong";
+                const card = document.createElement("div");
+                card.className = `p-3.5 rounded-xl border ${isCorrect ? "bg-emerald-50/50 border-emerald-200" : "bg-rose-50/50 border-rose-200"} text-xs`;
+
+                const heading = document.createElement("div");
+                heading.className = "flex justify-between font-bold mb-1";
+                const title = document.createElement("span");
+                title.className = isCorrect ? "text-emerald-800" : "text-rose-800";
+                title.textContent = `Soal #${idx + 1} (${getElemenSoal(idx, soal)}) - ${isCorrect ? "BENAR" : "SALAH"}`;
+                const answers = document.createElement("span");
+                answers.className = "font-mono-code";
+                answers.textContent = `Jawaban Anda: ${hurufUser} | Kunci: ${hurufKunci}`;
+                heading.append(title, answers);
+
+                const question = document.createElement("p");
+                question.className = "text-slate-700 font-medium mb-1.5 whitespace-pre-line";
+                question.textContent = soal.soal;
+                const explanation = document.createElement("p");
+                explanation.className = "text-slate-500 text-[11px] bg-white p-2 rounded-lg border border-slate-200";
+                const explanationLabel = document.createElement("strong");
+                explanationLabel.textContent = "Pembahasan: ";
+                explanation.append(explanationLabel, document.createTextNode(soal.pembahasan || "Belum ada pembahasan."));
+                card.append(heading, question, explanation);
+                listEl.appendChild(card);
+            });
+        }
+
+        function togglePembahasan() {
+            const container = document.getElementById("pembahasan-container");
+            const btn = document.getElementById("btn-toggle-pembahasan");
+            if (container.classList.contains("hidden")) {
+                container.classList.remove("hidden");
+                btn.innerText = "Sembunyikan Pembahasan";
+            } else {
+                container.classList.add("hidden");
+                btn.innerText = "Lihat Pembahasan";
+            }
+        }
+    </script>
+</body>
+</html>
